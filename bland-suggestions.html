@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Suggestions</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', sans-serif;
+            background: transparent;
+            padding: 12px;
+        }
+        
+        .suggestions-wrapper {
+            width: 100%;
+        }
+        
+        .suggestions-title {
+            color: #666;
+            font-size: 13px;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+        
+        .suggestions-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            width: 100%;
+        }
+        
+        .suggestion-btn {
+            background: #ffffff;
+            border: 1.5px solid #e0e0e0;
+            border-radius: 20px;
+            padding: 10px 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 14px;
+            font-weight: 500;
+            color: #333;
+            display: inline-block;
+            white-space: nowrap;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        }
+        
+        .suggestion-btn:hover {
+            background: #f8f8f8;
+            border-color: #1a73e8;
+            color: #1a73e8;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 6px rgba(26,115,232,0.15);
+        }
+        
+        .suggestion-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+        }
+        
+
+        /* Animation for initial load */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .suggestion-btn {
+            animation: fadeInUp 0.3s ease forwards;
+        }
+        
+        .suggestion-btn:nth-child(1) { animation-delay: 0.05s; }
+        .suggestion-btn:nth-child(2) { animation-delay: 0.1s; }
+        .suggestion-btn:nth-child(3) { animation-delay: 0.15s; }
+        .suggestion-btn:nth-child(4) { animation-delay: 0.2s; }
+        .suggestion-btn:nth-child(5) { animation-delay: 0.25s; }
+    </style>
+</head>
+<body>
+    <div class="suggestions-wrapper">
+        <div class="suggestions-title">Quick suggestions:</div>
+        <div class="suggestions-container">
+            <button class="suggestion-btn" onclick="sendToChat('I need help with patient data management')">
+                Patient Data Management
+            </button>
+            <button class="suggestion-btn" onclick="sendToChat('Tell me about your healthcare analytics solutions')">
+                Healthcare Analytics
+            </button>
+            <button class="suggestion-btn" onclick="sendToChat('I want to schedule a demo')">
+                Schedule Demo
+            </button>
+            <button class="suggestion-btn" onclick="sendToChat('What integrations do you support?')">
+                Integrations
+            </button>
+            <button class="suggestion-btn" onclick="sendToChat('I need technical support')">
+                Technical Support
+            </button>
+        </div>
+    </div>
+
+    <script>
+        function sendToChat(message) {
+            // Method 1: Try to send via postMessage to parent window
+            try {
+                window.parent.postMessage({
+                    type: 'bland_suggestion',
+                    message: message,
+                    action: 'send_message'
+                }, '*');
+                
+                // Visual feedback
+                showFeedback('Sending: ' + message);
+            } catch (error) {
+                console.error('Error sending message:', error);
+            }
+            
+            // Method 2: Try to update the parent window's input field directly
+            try {
+                // Look for Bland AI chat input in parent window
+                const parentDoc = window.parent.document;
+                const chatInput = parentDoc.querySelector('input[type="text"], textarea') || 
+                                 parentDoc.querySelector('[contenteditable="true"]');
+                
+                if (chatInput) {
+                    chatInput.value = message;
+                    chatInput.dispatchEvent(new Event('input', { bubbles: true }));
+                    
+                    // Try to trigger send
+                    const sendButton = parentDoc.querySelector('button[type="submit"], button[aria-label*="send"]');
+                    if (sendButton) {
+                        sendButton.click();
+                    }
+                }
+            } catch (error) {
+                // This might fail due to cross-origin restrictions
+                console.log('Direct DOM manipulation not possible due to iframe restrictions');
+            }
+            
+            // Method 3: Update URL parameters (if Bland reads from them)
+            try {
+                const params = new URLSearchParams(window.location.search);
+                params.set('message', message);
+                params.set('timestamp', Date.now());
+                window.history.replaceState({}, '', `${window.location.pathname}?${params}`);
+            } catch (error) {
+                console.error('Error updating URL params:', error);
+            }
+        }
+        
+        function showFeedback(text) {
+            // Create temporary feedback element
+            const feedback = document.createElement('div');
+            feedback.style.cssText = `
+                position: fixed;
+                bottom: 10px;
+                right: 10px;
+                background: #333;
+                color: white;
+                padding: 8px 16px;
+                border-radius: 4px;
+                font-size: 12px;
+                z-index: 1000;
+                animation: fadeInUp 0.3s ease;
+            `;
+            feedback.textContent = text;
+            document.body.appendChild(feedback);
+            
+            // Remove after 2 seconds
+            setTimeout(() => {
+                feedback.style.opacity = '0';
+                setTimeout(() => feedback.remove(), 300);
+            }, 2000);
+        }
+        
+        // Listen for messages from parent window
+        window.addEventListener('message', function(event) {
+            console.log('Received message:', event.data);
+            // Handle any responses from Bland AI if needed
+        });
+        
+        // Send a ready signal to parent
+        window.parent.postMessage({
+            type: 'bland_component_ready',
+            component: 'suggestions'
+        }, '*');
+    </script>
+</body>
+</html>
