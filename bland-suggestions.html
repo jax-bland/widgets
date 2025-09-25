@@ -17,6 +17,16 @@
             padding: 12px;
         }
         
+        .greeting-message {
+            color: #333;
+            font-size: 16px;
+            line-height: 1.5;
+            margin-bottom: 16px;
+            padding: 12px 16px;
+            background: #f5f5f5;
+            border-radius: 12px;
+        }
+        
         .suggestions-wrapper {
             width: 100%;
         }
@@ -163,8 +173,6 @@
     <div class="suggestions-wrapper">
         <button class="back-btn" onclick="showMainButtons()" id="backBtn">← Back</button>
         
-        <div class="suggestions-title" id="suggestionsTitle"></div>
-        
         <div class="suggestions-container" id="mainButtons">
             <button class="suggestion-btn" onclick="sendToChat('I want to choose a doctor')">
                 Choose a Doctor
@@ -235,8 +243,6 @@
             document.getElementById('faqList').classList.add('active');
             // Show back button
             document.getElementById('backBtn').classList.add('active');
-            // Update title
-            document.getElementById('suggestionsTitle').textContent = 'Frequently Asked Questions:';
             
             // Animate FAQ items
             const faqItems = document.querySelectorAll('.faq-item');
@@ -256,45 +262,17 @@
             document.getElementById('faqList').classList.remove('active');
             // Hide back button
             document.getElementById('backBtn').classList.remove('active');
-            // Reset title
-            document.getElementById('suggestionsTitle').textContent = '';
         }
         
         function sendToChat(message) {
-            // Method 1: Try to send via postMessage to parent window
+            // Use Bland AI's specific message format
             try {
-                window.parent.postMessage({
-                    type: 'bland_suggestion',
-                    message: message,
-                    action: 'send_message'
-                }, '*');
+                window.parent.postMessage(`widget-message:${message}`, '*');
                 
                 // Visual feedback
                 showFeedback('Sending: ' + message);
             } catch (error) {
                 console.error('Error sending message:', error);
-            }
-            
-            // Method 2: Try to update the parent window's input field directly
-            try {
-                // Look for Bland AI chat input in parent window
-                const parentDoc = window.parent.document;
-                const chatInput = parentDoc.querySelector('input[type="text"], textarea') || 
-                                 parentDoc.querySelector('[contenteditable="true"]');
-                
-                if (chatInput) {
-                    chatInput.value = message;
-                    chatInput.dispatchEvent(new Event('input', { bubbles: true }));
-                    
-                    // Try to trigger send
-                    const sendButton = parentDoc.querySelector('button[type="submit"], button[aria-label*="send"]');
-                    if (sendButton) {
-                        sendButton.click();
-                    }
-                }
-            } catch (error) {
-                // This might fail due to cross-origin restrictions
-                console.log('Direct DOM manipulation not possible due to iframe restrictions');
             }
             
             // After sending, return to main buttons if in FAQ view
@@ -330,17 +308,8 @@
             }, 2000);
         }
         
-        // Listen for messages from parent window
-        window.addEventListener('message', function(event) {
-            console.log('Received message:', event.data);
-            // Handle any responses from Bland AI if needed
-        });
-        
-        // Send a ready signal to parent
-        window.parent.postMessage({
-            type: 'bland_component_ready',
-            component: 'suggestions'
-        }, '*');
+        // Remove the listener for messages and ready signal since they're not needed
+        // for Bland's implementation
     </script>
 </body>
 </html>
