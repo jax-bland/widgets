@@ -265,12 +265,15 @@
         }
         
         function sendToChat(message) {
-            // Use Bland AI's specific message format
+            // Use Bland AI's specific message format with backticks
+            const messageToSend = `widget-message:${message}`;
+            
             try {
-                window.parent.postMessage(`widget-message:${message}`, '*');
+                window.parent.postMessage(messageToSend, '*');
+                console.log('Sent message:', messageToSend);
                 
                 // Visual feedback
-                showFeedback('Sending: ' + message);
+                showFeedback('Sent: ' + message);
             } catch (error) {
                 console.error('Error sending message:', error);
             }
