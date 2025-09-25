@@ -163,7 +163,7 @@
     <div class="suggestions-wrapper">
         <button class="back-btn" onclick="showMainButtons()" id="backBtn">← Back</button>
         
-        <div class="suggestions-title" id="suggestionsTitle">How can I help you today?</div>
+        <div class="suggestions-title" id="suggestionsTitle"></div>
         
         <div class="suggestions-container" id="mainButtons">
             <button class="suggestion-btn" onclick="sendToChat('I want to choose a doctor')">
@@ -257,7 +257,7 @@
             // Hide back button
             document.getElementById('backBtn').classList.remove('active');
             // Reset title
-            document.getElementById('suggestionsTitle').textContent = 'How can I help you today?';
+            document.getElementById('suggestionsTitle').textContent = '';
         }
         
         function sendToChat(message) {
