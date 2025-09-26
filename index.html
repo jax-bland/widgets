@@ -28,7 +28,7 @@
             width: 100%;
         }
         
-        .suggestion-btn {
+        .card {
             background: #ffffff;
             border: 1.5px solid #e0e0e0;
             border-radius: 20px;
@@ -43,7 +43,7 @@
             box-shadow: 0 1px 3px rgba(0,0,0,0.08);
         }
         
-        .suggestion-btn:hover {
+        .card:hover {
             background: #f8f8f8;
             border-color: #1a73e8;
             color: #1a73e8;
@@ -51,9 +51,25 @@
             box-shadow: 0 2px 6px rgba(26,115,232,0.15);
         }
         
-        .suggestion-btn:active {
+        .card:active {
             transform: translateY(0);
             box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+        }
+        
+        .choose-doctor-button {
+            all: inherit;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font: inherit;
+        }
+        
+        .faq-button {
+            all: inherit;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font: inherit;
         }
         
         /* FAQ List Styles */
@@ -69,7 +85,7 @@
             display: block;
         }
         
-        .faq-item {
+        .faq-card {
             background: #f9f9f9;
             border: 1px solid #e0e0e0;
             border-radius: 8px;
@@ -79,7 +95,7 @@
             transition: all 0.2s ease;
         }
         
-        .faq-item:hover {
+        .faq-card:hover {
             background: #ffffff;
             border-color: #1a73e8;
             box-shadow: 0 2px 4px rgba(0,0,0,0.08);
@@ -116,8 +132,6 @@
             background: #e0e0e0;
         }
         
-
-        
         /* Animation for initial load */
         @keyframes fadeInUp {
             from {
@@ -130,7 +144,7 @@
             }
         }
         
-        .suggestion-btn, .faq-item {
+        .card, .faq-card {
             animation: fadeInUp 0.3s ease forwards;
         }
         
@@ -159,63 +173,97 @@
         <button class="back-btn" onclick="showMainButtons()" id="backBtn">← Back</button>
         
         <div class="suggestions-container" id="mainButtons">
-            <button class="suggestion-btn" onclick="sendToChat('I want to choose a doctor')">
-                Choose a Doctor
-            </button>
-            <button class="suggestion-btn" onclick="showFAQs()">
-                FAQ
-            </button>
+            <div class="card">
+                <button class="choose-doctor-button">
+                    <h4>I want to choose a doctor</h4>
+                </button>
+            </div>
+            <div class="card">
+                <button class="faq-button" onclick="showFAQs()">
+                    FAQ
+                </button>
+            </div>
         </div>
         
         <div class="faq-list" id="faqList">
-            <div class="faq-item" onclick="sendToChat('What is Innovaccer?')">
-                <span class="faq-number">1.</span>
-                <span class="faq-question">What is Innovaccer?</span>
+            <div class="faq-card">
+                <button class="choose-doctor-button">
+                    <span class="faq-number">1.</span>
+                    <span class="faq-question">What is Innovaccer?</span>
+                    <h4 style="display: none;">What is Innovaccer?</h4>
+                </button>
             </div>
             
-            <div class="faq-item" onclick="sendToChat('What does Innovaccer\'s platform do?')">
-                <span class="faq-number">2.</span>
-                <span class="faq-question">What does Innovaccer's platform do?</span>
+            <div class="faq-card">
+                <button class="choose-doctor-button">
+                    <span class="faq-number">2.</span>
+                    <span class="faq-question">What does Innovaccer's platform do?</span>
+                    <h4 style="display: none;">What does Innovaccer's platform do?</h4>
+                </button>
             </div>
             
-            <div class="faq-item" onclick="sendToChat('Who are Innovaccer\'s primary users or clients?')">
-                <span class="faq-number">3.</span>
-                <span class="faq-question">Who are Innovaccer's primary users or clients?</span>
+            <div class="faq-card">
+                <button class="choose-doctor-button">
+                    <span class="faq-number">3.</span>
+                    <span class="faq-question">Who are Innovaccer's primary users or clients?</span>
+                    <h4 style="display: none;">Who are Innovaccer's primary users or clients?</h4>
+                </button>
             </div>
             
-            <div class="faq-item" onclick="sendToChat('What are some of Innovaccer\'s key solution areas?')">
-                <span class="faq-number">4.</span>
-                <span class="faq-question">What are some of Innovaccer's key solution areas?</span>
+            <div class="faq-card">
+                <button class="choose-doctor-button">
+                    <span class="faq-number">4.</span>
+                    <span class="faq-question">What are some of Innovaccer's key solution areas?</span>
+                    <h4 style="display: none;">What are some of Innovaccer's key solution areas?</h4>
+                </button>
             </div>
             
-            <div class="faq-item" onclick="sendToChat('How does data integration and unification work?')">
-                <span class="faq-number">5.</span>
-                <span class="faq-question">How does data integration and unification work?</span>
+            <div class="faq-card">
+                <button class="choose-doctor-button">
+                    <span class="faq-number">5.</span>
+                    <span class="faq-question">How does data integration and unification work?</span>
+                    <h4 style="display: none;">How does data integration and unification work?</h4>
+                </button>
             </div>
             
-            <div class="faq-item" onclick="sendToChat('What are some measurable benefits or outcomes?')">
-                <span class="faq-number">6.</span>
-                <span class="faq-question">What are some measurable benefits or outcomes?</span>
+            <div class="faq-card">
+                <button class="choose-doctor-button">
+                    <span class="faq-number">6.</span>
+                    <span class="faq-question">What are some measurable benefits or outcomes?</span>
+                    <h4 style="display: none;">What are some measurable benefits or outcomes?</h4>
+                </button>
             </div>
             
-            <div class="faq-item" onclick="sendToChat('What EHR / infrastructure systems does Innovaccer support?')">
-                <span class="faq-number">7.</span>
-                <span class="faq-question">What EHR / infrastructure systems does Innovaccer support?</span>
+            <div class="faq-card">
+                <button class="choose-doctor-button">
+                    <span class="faq-number">7.</span>
+                    <span class="faq-question">What EHR / infrastructure systems does Innovaccer support?</span>
+                    <h4 style="display: none;">What EHR / infrastructure systems does Innovaccer support?</h4>
+                </button>
             </div>
             
-            <div class="faq-item" onclick="sendToChat('Is Innovaccer recognized or awarded in the industry?')">
-                <span class="faq-number">8.</span>
-                <span class="faq-question">Is Innovaccer recognized or awarded in the industry?</span>
+            <div class="faq-card">
+                <button class="choose-doctor-button">
+                    <span class="faq-number">8.</span>
+                    <span class="faq-question">Is Innovaccer recognized or awarded in the industry?</span>
+                    <h4 style="display: none;">Is Innovaccer recognized or awarded in the industry?</h4>
+                </button>
             </div>
             
-            <div class="faq-item" onclick="sendToChat('Is Innovaccer secure and how does it treat privacy / trust?')">
-                <span class="faq-number">9.</span>
-                <span class="faq-question">Is Innovaccer secure and how does it treat privacy / trust?</span>
+            <div class="faq-card">
+                <button class="choose-doctor-button">
+                    <span class="faq-number">9.</span>
+                    <span class="faq-question">Is Innovaccer secure and how does it treat privacy / trust?</span>
+                    <h4 style="display: none;">Is Innovaccer secure and how does it treat privacy / trust?</h4>
+                </button>
             </div>
             
-            <div class="faq-item" onclick="sendToChat('How do I get started or trial Innovaccer?')">
-                <span class="faq-number">10.</span>
-                <span class="faq-question">How do I get started or trial Innovaccer?</span>
+            <div class="faq-card">
+                <button class="choose-doctor-button">
+                    <span class="faq-number">10.</span>
+                    <span class="faq-question">How do I get started or trial Innovaccer?</span>
+                    <h4 style="display: none;">How do I get started or trial Innovaccer?</h4>
+                </button>
             </div>
         </div>
     </div>
@@ -226,12 +274,12 @@
             document.getElementById('faqList').classList.add('active');
             document.getElementById('backBtn').classList.add('active');
             
-            const faqItems = document.querySelectorAll('.faq-item');
-            faqItems.forEach((item, index) => {
-                item.style.animation = 'none';
+            const faqCards = document.querySelectorAll('.faq-card');
+            faqCards.forEach((card, index) => {
+                card.style.animation = 'none';
                 setTimeout(() => {
-                    item.style.animation = `fadeInUp 0.3s ease forwards`;
-                    item.style.animationDelay = `${index * 0.05}s`;
+                    card.style.animation = `fadeInUp 0.3s ease forwards`;
+                    card.style.animationDelay = `${index * 0.05}s`;
                 }, 10);
             });
         }
@@ -242,47 +290,25 @@
             document.getElementById('backBtn').classList.remove('active');
         }
         
-        function sendToChat(message) {
-            const messageToSend = `widget-message:${message}`;
-            
-            try {
-                window.parent.postMessage(messageToSend, '*');
-                console.log('Sent message:', messageToSend);
-                
-                showFeedback('Sent: ' + message);
-            } catch (error) {
-                console.error('Error sending message:', error);
-            }
-            
-            if (document.getElementById('faqList').classList.contains('active')) {
-                setTimeout(() => {
-                    showMainButtons();
-                }, 500);
-            }
-        }
-        
-        function showFeedback(text) {
-            const feedback = document.createElement('div');
-            feedback.style.cssText = `
-                position: fixed;
-                bottom: 10px;
-                right: 10px;
-                background: #333;
-                color: white;
-                padding: 8px 16px;
-                border-radius: 4px;
-                font-size: 12px;
-                z-index: 1000;
-                animation: fadeInUp 0.3s ease;
-            `;
-            feedback.textContent = text;
-            document.body.appendChild(feedback);
-            
-            setTimeout(() => {
-                feedback.style.opacity = '0';
-                setTimeout(() => feedback.remove(), 300);
-            }, 2000);
-        }
+        // Optional fallback - if Bland AI doesn't inject their code, this will still work
+        document.addEventListener('DOMContentLoaded', function() {
+            const buttons = document.querySelectorAll('.choose-doctor-button');
+            buttons.forEach((button) => {
+                button.addEventListener('click', () => {
+                    const card = button.closest('.card, .faq-card');
+                    const h4Element = card.querySelector('h4');
+                    if (h4Element) {
+                        const message = h4Element.textContent.trim();
+                        try {
+                            window.parent.postMessage(`widget-message:${message}`, '*');
+                            console.log('Sent message:', message);
+                        } catch (error) {
+                            console.error('Error sending message:', error);
+                        }
+                    }
+                });
+            });
+        });
     </script>
 </body>
 </html>
