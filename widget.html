@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Suggestions</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', sans-serif;
+            background: transparent;
+            padding: 12px;
+        }
+        
+        .suggestions-wrapper {
+            width: 100%;
+        }
+        
+        .suggestions-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            width: 100%;
+        }
+        
+        .suggestion-btn {
+            background: #ffffff;
+            border: 1.5px solid #e0e0e0;
+            border-radius: 20px;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 14px;
+            font-weight: 500;
+            color: #333;
+            display: inline-block;
+            white-space: nowrap;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        }
+        
+        .suggestion-btn:hover {
+            background: #f8f8f8;
+            border-color: #1a73e8;
+            color: #1a73e8;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 6px rgba(26,115,232,0.15);
+        }
+        
+        .suggestion-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+        }
+        
+        /* FAQ List Styles */
+        .faq-list {
+            display: none;
+            margin-top: 12px;
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+        
+        .faq-list.active {
+            display: block;
+        }
+        
+        .faq-item {
+            background: #f9f9f9;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .faq-item:hover {
+            background: #ffffff;
+            border-color: #1a73e8;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+        }
+        
+        .faq-number {
+            font-weight: 600;
+            color: #1a73e8;
+            margin-right: 8px;
+        }
+        
+        .faq-question {
+            color: #333;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+        
+        .back-btn {
+            background: #f0f0f0;
+            border: 1px solid #d0d0d0;
+            border-radius: 15px;
+            padding: 6px 12px;
+            cursor: pointer;
+            font-size: 12px;
+            margin-bottom: 10px;
+            display: none;
+        }
+        
+        .back-btn.active {
+            display: inline-block;
+        }
+        
+        .back-btn:hover {
+            background: #e0e0e0;
+        }
+        
+
+        
+        /* Animation for initial load */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .suggestion-btn, .faq-item {
+            animation: fadeInUp 0.3s ease forwards;
+        }
+        
+        /* Custom scrollbar for FAQ list */
+        .faq-list::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .faq-list::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 3px;
+        }
+        
+        .faq-list::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 3px;
+        }
+        
+        .faq-list::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="suggestions-wrapper">
+        <button class="back-btn" onclick="showMainButtons()" id="backBtn">← Back</button>
+        
+        <div class="suggestions-container" id="mainButtons">
+            <button class="suggestion-btn" onclick="sendToChat('I want to choose a doctor')">
+                Choose a Doctor
+            </button>
+            <button class="suggestion-btn" onclick="showFAQs()">
+                FAQ
+            </button>
+        </div>
+        
+        <div class="faq-list" id="faqList">
+            <div class="faq-item" onclick="sendToChat('What is Innovaccer?')">
+                <span class="faq-number">1.</span>
+                <span class="faq-question">What is Innovaccer?</span>
+            </div>
+            
+            <div class="faq-item" onclick="sendToChat('What does Innovaccer\'s platform do?')">
+                <span class="faq-number">2.</span>
+                <span class="faq-question">What does Innovaccer's platform do?</span>
+            </div>
+            
+            <div class="faq-item" onclick="sendToChat('Who are Innovaccer\'s primary users or clients?')">
+                <span class="faq-number">3.</span>
+                <span class="faq-question">Who are Innovaccer's primary users or clients?</span>
+            </div>
+            
+            <div class="faq-item" onclick="sendToChat('What are some of Innovaccer\'s key solution areas?')">
+                <span class="faq-number">4.</span>
+                <span class="faq-question">What are some of Innovaccer's key solution areas?</span>
+            </div>
+            
+            <div class="faq-item" onclick="sendToChat('How does data integration and unification work?')">
+                <span class="faq-number">5.</span>
+                <span class="faq-question">How does data integration and unification work?</span>
+            </div>
+            
+            <div class="faq-item" onclick="sendToChat('What are some measurable benefits or outcomes?')">
+                <span class="faq-number">6.</span>
+                <span class="faq-question">What are some measurable benefits or outcomes?</span>
+            </div>
+            
+            <div class="faq-item" onclick="sendToChat('What EHR / infrastructure systems does Innovaccer support?')">
+                <span class="faq-number">7.</span>
+                <span class="faq-question">What EHR / infrastructure systems does Innovaccer support?</span>
+            </div>
+            
+            <div class="faq-item" onclick="sendToChat('Is Innovaccer recognized or awarded in the industry?')">
+                <span class="faq-number">8.</span>
+                <span class="faq-question">Is Innovaccer recognized or awarded in the industry?</span>
+            </div>
+            
+            <div class="faq-item" onclick="sendToChat('Is Innovaccer secure and how does it treat privacy / trust?')">
+                <span class="faq-number">9.</span>
+                <span class="faq-question">Is Innovaccer secure and how does it treat privacy / trust?</span>
+            </div>
+            
+            <div class="faq-item" onclick="sendToChat('How do I get started or trial Innovaccer?')">
+                <span class="faq-number">10.</span>
+                <span class="faq-question">How do I get started or trial Innovaccer?</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showFAQs() {
+            document.getElementById('mainButtons').style.display = 'none';
+            document.getElementById('faqList').classList.add('active');
+            document.getElementById('backBtn').classList.add('active');
+            
+            const faqItems = document.querySelectorAll('.faq-item');
+            faqItems.forEach((item, index) => {
+                item.style.animation = 'none';
+                setTimeout(() => {
+                    item.style.animation = `fadeInUp 0.3s ease forwards`;
+                    item.style.animationDelay = `${index * 0.05}s`;
+                }, 10);
+            });
+        }
+        
+        function showMainButtons() {
+            document.getElementById('mainButtons').style.display = 'flex';
+            document.getElementById('faqList').classList.remove('active');
+            document.getElementById('backBtn').classList.remove('active');
+        }
+        
+        function sendToChat(message) {
+            const messageToSend = `widget-message:${message}`;
+            
+            try {
+                window.parent.postMessage(messageToSend, '*');
+                console.log('Sent message:', messageToSend);
+                
+                showFeedback('Sent: ' + message);
+            } catch (error) {
+                console.error('Error sending message:', error);
+            }
+            
+            if (document.getElementById('faqList').classList.contains('active')) {
+                setTimeout(() => {
+                    showMainButtons();
+                }, 500);
+            }
+        }
+        
+        function showFeedback(text) {
+            const feedback = document.createElement('div');
+            feedback.style.cssText = `
+                position: fixed;
+                bottom: 10px;
+                right: 10px;
+                background: #333;
+                color: white;
+                padding: 8px 16px;
+                border-radius: 4px;
+                font-size: 12px;
+                z-index: 1000;
+                animation: fadeInUp 0.3s ease;
+            `;
+            feedback.textContent = text;
+            document.body.appendChild(feedback);
+            
+            setTimeout(() => {
+                feedback.style.opacity = '0';
+                setTimeout(() => feedback.remove(), 300);
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
